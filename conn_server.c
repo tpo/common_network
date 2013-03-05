@@ -70,7 +70,7 @@ int disconnect_client( int sockfd ) {
   // http://www.developerweb.net/forum/showthread.php?t=2941
   while( read( sockfd, &c, 1) > 0 );
   if( close(sockfd) != 0 ) {
-    perror("ERROR on binding");
+    perror("ERROR on connection closing");
     return -1;
   }
   return 0;
