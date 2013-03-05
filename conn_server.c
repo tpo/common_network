@@ -23,9 +23,9 @@ int listen_on_port(int portno )
        return -1;
      }
      /* fix for WAITing sockets on linux */
-     int val = 1;
+     int yes = 1;
      if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, 
-         &val, sizeof(val)) == -1)
+         &yes, sizeof(yes)) == -1)
      {
        perror("ERROR on setsockopt()");
      }
@@ -55,7 +55,7 @@ int connect_with_client( int sockfd )
      newsockfd = accept(sockfd, 
                  (struct sockaddr *) &cli_addr, 
                  &clilen);
-     if (newsockfd == -1 ) 
+     if (newsockfd == -1 )
        perror("ERROR on binding");
      return newsockfd;
 }
