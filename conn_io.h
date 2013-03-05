@@ -4,6 +4,6 @@
  * identisch mit fgets, ausser, dass es auf Sockets funktioniert.
  * Siehe man 2 fgets
  */
-char *read_line(int fd, char *s, int max_size);
+char *read_line(int socket_fd, char *s, int max_size);
 
 #endif
