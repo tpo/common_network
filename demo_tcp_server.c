@@ -9,10 +9,10 @@
 * Copyright: See COPYING file that comes with this distribution
 *
 */
-#include <stdlib.h>     // exit
+#include <stdlib.h>      // exit
 #include <stdio.h>
-#include <string.h>     // strlen
-#include <unistd.h>     // getopt
+#include <string.h>      // strlen
+#include <unistd.h>      // getopt
 #include "conn_server.h"
 #include "conn_io.h"     // send_all
 
@@ -20,22 +20,43 @@ void report_error( char* message ) {
   fprintf( stderr, "ERROR: %s\n", message );
 }
 
+// Roles that a node can play
+#define HOP    0
+#define ZIEL   1
+#define QUELLE 2
+short node_role = HOP;
+
+#define NO_TCP_PORT -1
+int   tcp_port  = NO_TCP_PORT;
+
 void parse_options( int argc, char *argv[])
 {
   char optchar;
 
-  if (argc < 2) {
-    report_error("no port provided");
-    exit( -1);
-  }
-  while( ( optchar = getopt( argc, argv, "h" ) ) != -1 ) {
+  while( ( optchar = getopt( argc, argv, "-hqz" ) ) != -1 ) {
     switch( optchar ) {
+      case 'z':
+        node_role = ZIEL;
+        break;;
+      case 'q':
+        node_role = QUELLE;
+        break;;
+      case 1: // optchar '-' will assign non-option to 1
+        tcp_port = atoi(optarg);
+        break;;
       case 'h':
       case '?':
       default:
-        printf("Usage: server port\n");
-        exit( 0 );
+	if (tcp_port == NO_TCP_PORT ) {
+          printf("Usage: server port [-z|-q]\n");
+          exit( 0 );
+	}
     }
+  }
+
+  if (tcp_port == NO_TCP_PORT ) {
+    report_error("no port provided");
+    exit( -1);
   }
 }
 
@@ -47,7 +68,7 @@ int main(int argc, char *argv[])
 
   parse_options( argc, argv );
 
-  if( (sock_fd = listen_on_port( atoi(argv[optind]) )) < 0 ) {
+  if( (sock_fd = listen_on_port(tcp_port) ) < 0 ) {
     report_error("failed to listen on the port");
     return sock_fd;
   }
