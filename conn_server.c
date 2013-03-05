@@ -17,7 +17,7 @@ int listen_on_port(int portno )
      struct sockaddr_in serv_addr;
 
      sockfd = socket(AF_INET, SOCK_STREAM, 0);
-     if (sockfd < 0)
+     if (sockfd == -1)
      {
        perror("ERROR opening socket");
        return -1;
@@ -33,7 +33,7 @@ int listen_on_port(int portno )
      serv_addr.sin_family = AF_INET;
      serv_addr.sin_addr.s_addr = INADDR_ANY;
      serv_addr.sin_port = htons(portno);
-     if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
+     if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) == -1)
      {
        perror("ERROR on binding");
        return -2;
@@ -55,7 +55,7 @@ int connect_with_client( int sockfd )
      newsockfd = accept(sockfd, 
                  (struct sockaddr *) &cli_addr, 
                  &clilen);
-     if (newsockfd < 0) 
+     if (newsockfd == -1 ) 
        perror("ERROR on binding");
      return newsockfd;
 }
