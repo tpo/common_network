@@ -1,6 +1,6 @@
 #on Sun you need these
-EXTRA_LIBS=-lnsl -lsocket
-#EXTRA_LIBS=
+#EXTRA_LIBS=-lnsl -lsocket
+EXTRA_LIBS=
 
 clean:
 	rm -f *~ *.bak
