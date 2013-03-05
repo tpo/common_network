@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <string.h>     // strlen
 #include <unistd.h>     // getopt
-#include "conn_handling_server.h"
+#include "conn_server.h"
 
 void report_error( char* message ) {
   fprintf( stderr, "ERROR: %s\n", message );

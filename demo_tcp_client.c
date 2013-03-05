@@ -1,9 +1,9 @@
 #include <stdio.h>
-#include <stdlib.h>     // exit
-#include <string.h>     // memset, memcpy, strlen
-#include <unistd.h>     // getopt
-#include "conn_handling_client.h" // open_connection_to
-#include "conn_read_line.h"       // read_line
+#include <stdlib.h>       // exit
+#include <string.h>       // memset, memcpy, strlen
+#include <unistd.h>       // getopt
+#include "conn_client.h"  // open_connection_to
+#include "conn_io.h"      // read_line
 
 void recv_message( int sockfd) {
   char message[6]; /* we expect "Hello" */
