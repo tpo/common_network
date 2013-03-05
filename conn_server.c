@@ -38,7 +38,7 @@ int listen_on_port(int portno )
        perror("ERROR on binding");
        return -2;
      }
-     listen(sockfd,5);
+     listen(sockfd,5); // there can be 5 pending connections
      return sockfd;
 }
 
