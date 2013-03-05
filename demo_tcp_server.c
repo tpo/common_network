@@ -14,6 +14,7 @@
 #include <string.h>     // strlen
 #include <unistd.h>     // getopt
 #include "conn_server.h"
+#include "conn_io.h"     // send_all
 
 void report_error( char* message ) {
   fprintf( stderr, "ERROR: %s\n", message );
@@ -40,28 +41,25 @@ void parse_options( int argc, char *argv[])
 
 int main(int argc, char *argv[])
 {
-  int sockfd, connection_fd;
+  int sock_fd, connection_fd;
   pthread_t pthread;
   extern int optind;                // from unistd.h:getopt
 
   parse_options( argc, argv );
 
-  if( (sockfd = listen_on_port( atoi(argv[optind]) )) < 0 ) {
+  if( (sock_fd = listen_on_port( atoi(argv[optind]) )) < 0 ) {
     report_error("failed to listen on the port");
-    return sockfd;
+    return sock_fd;
   }
 
-  if( (connection_fd = connect_with_client( sockfd )) != 0) {
-    if( write(connection_fd, "Hello", strlen("Hello")) != strlen("Hello") )
-      perror("failed to write to client");
-    if( write(connection_fd, "Hello Goodbye\n", strlen("Hello Goodbye\n"))
-		    != strlen("Hello Goodbye\n") )
-      perror("failed to write to client");
+  if( (connection_fd = connect_with_client( sock_fd )) != 0) {
+    send_all(connection_fd, "Hello\n",         strlen("Hello\n"));
+    send_all(connection_fd, "Hello Goodbye\n", strlen("Hello Goodbye\n"));
   }
   else {
     report_error("failed to get a client connection");
   }
-  disconnect_client( sockfd);
+  disconnect_client( sock_fd);
 
   return 0; 
 }
