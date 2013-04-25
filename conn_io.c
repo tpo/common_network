@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <unistd.h>
 #include "conn_io.h" // make sure we implement the same API
 
 char *read_line(int socket_fd, char *s, int max_size) {
@@ -26,5 +27,6 @@ int send_all(int socket_fd, void* bytes, size_t len) {
     }
     total_bytes_written += bytes_written;
   }
+  return total_bytes_written;
 }
 
