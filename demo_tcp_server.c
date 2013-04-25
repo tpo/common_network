@@ -29,42 +29,41 @@ short node_role = HOP;
 #define NO_TCP_PORT -1
 int   tcp_port  = NO_TCP_PORT;
 
+static void usage()
+{
+  printf("Usage: server port [-z|-q]\n");
+  exit(0);
+}
+
 void parse_options( int argc, char *argv[])
 {
   char optchar;
 
-  while( ( optchar = getopt( argc, argv, "-hqz" ) ) != -1 ) {
+  if (argc < 2)
+    usage();
+  tcp_port = atoi(argv[1]);
+
+  while( ( optchar = getopt( argc-1, argv+1, "hqz" ) ) != -1 ) {
     switch( optchar ) {
       case 'z':
+        printf("ZIEL\n");
         node_role = ZIEL;
-        break;;
+        break;
       case 'q':
+        printf("QUELLE\n");
         node_role = QUELLE;
-        break;;
-      case 1: // optchar '-' will assign non-option to 1
-        tcp_port = atoi(optarg);
-        break;;
+        break;
       case 'h':
       case '?':
       default:
-	if (tcp_port == NO_TCP_PORT ) {
-          printf("Usage: server port [-z|-q]\n");
-          exit( 0 );
-	}
+		break;
     }
-  }
-
-  if (tcp_port == NO_TCP_PORT ) {
-    report_error("no port provided");
-    exit( -1);
   }
 }
 
 int main(int argc, char *argv[])
 {
   int sock_fd, connection_fd;
-  pthread_t pthread;
-  extern int optind;                // from unistd.h:getopt
 
   parse_options( argc, argv );
 

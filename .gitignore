@@ -1,0 +1,4 @@
+*.o
+.depend/
+demo_tcp_client
+demo_tcp_server
