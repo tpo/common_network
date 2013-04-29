@@ -27,5 +27,6 @@ int send_all(int socket_fd, void* bytes, size_t len) {
     }
     total_bytes_written += bytes_written;
   }
+  return total_bytes_written;
 }
 
